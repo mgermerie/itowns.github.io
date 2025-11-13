@@ -55,6 +55,55 @@
   display: block;
 }
 
+.example-cards-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-L);
+}
+
+.example-card {
+  border: 1px solid var(--border-medium-gray);
+  border-radius: var(--radius-L);
+  box-shadow: 4px 4px 1px 0 var(--background-gray);
+  box-sizing: border-box;
+
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  color: var(--text-primary);
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.example-card::before {
+  box-sizing: border-box;
+  height: 80px;
+  width: 100%;
+
+  background-image: var(--image);
+  background-position: center;
+  background-size: cover;
+  content: "";
+}
+
+.example-card:hover {
+  // border: 2px solid var(--border-medium-gray);
+  box-shadow: -4px -4px 1px 0 var(--background-gray);
+  background-color: var(--background-light-gray);
+}
+
+.example-card:hover::before {
+  filter: brightness(0.8);
+}
+
+.example-card-title {
+  font-size: 16px;
+  text-align: center;
+  padding: var(--spacing-2XS);
+}
+
 
 @media (max-width: $MOBILE_BREAKPOINT) {
   .alternative-cards-wrapper {

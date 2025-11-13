@@ -1,0 +1,42 @@
+{% assign tab = include.content %}
+
+{% include components/tab-header.html content=tab %}
+
+{% for item in site.data.examples %}
+
+	{% assign category=item[0] %}
+
+    <section class="tab-section">
+
+        <h4 class="tab-section-title">
+			{{ category }}
+        </h4>
+
+        <div class="example-cards-wrapper">
+
+            {% for example in item[1] %}
+
+                {% assign name = example[0] %}
+                {% assign title = example[1] %}
+
+                <a	class="example-card"
+					href="{{ site.baseurl }}/itowns/examples/#{{ name }}"
+					title="Open {{ title }} example in a new tab"
+					target="_blank"
+					style="--image:url('{{ site.baseurl
+						   }}/assets/images/examples/{{ category }}/{{ name
+						   }}.png')">
+
+                    <span class="example-card-title">
+                        {{ example[1] }}
+                    </span>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+{% endfor %}

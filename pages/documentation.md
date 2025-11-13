@@ -92,16 +92,7 @@ tutorials at the following link.
 
 
 ## Examples
-
-
-### This content is not ready yet
-{: data-template="not-ready"}
-
-This website is still under construction and the examples page has not been
-implemented yet. Please visit the old version of the documentation, including
-examples at the following link.
-
-[Visit former examples][uri-examples]
+{: data-template="example-caroussel"}
 
 
 
