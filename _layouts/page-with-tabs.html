@@ -85,69 +85,67 @@
 
 			{% assign tab_id = tab.title | slugify %}
 
-			<div	class="tab-content-wrapper"
-					id="tab-{{ tab_id }}">
+			{% if tab.template %}
 
-				<div class="tab-header">
+				<div	class="tab-content-wrapper"
+						id="tab-{{ tab_id }}">
 
-					<h3 class="tab-title">
-						{{ tab.title }}
-					</h3>
-
-					{% if tab.desc %}
-
-						{% for desc in tab.desc %}
-
-							<p class="tab-description">
-								{{ desc.paragraph }}
-							</p>
-
-						{% endfor %}
-
-					{% endif %}
+					{% include custom-tabs/{{ tab.template }}.html
+						content=tab
+					%}
 
 				</div>
 
-				{% for section in tab.sections %}
+			{% else %}
 
+				<div	class="tab-content-wrapper"
+						id="tab-{{ tab_id }}">
 
-					{% if section.template %}
+					{% include components/tab-header.html
+						content=tab
+					%}
 
-						{% include custom-sections/{{ section.template }}.html
-							content=section
-						%}
+					{% for section in tab.sections %}
 
-					{% else %}
+						{% if section.template %}
 
-						<section class="tab-section">
-
-							{% include components/section-header.html
+							{% include custom-sections/{{ section.template }}.html
 								content=section
 							%}
 
-							{% if section.cards %}
+						{% else %}
 
-								<div class="cards-wrapper">
+							<section class="tab-section">
 
-									{% for card in section.cards %}
+								{% include components/section-header.html
+									content=section
+								%}
 
-										{% include components/card.html
-											content=card
-										%}
+								{% if section.cards %}
 
-									{% endfor %}
+									<div class="cards-wrapper">
 
-								</div>
+										{% for card in section.cards %}
 
-							{% endif %}
+											{% include components/card.html
+												content=card
+											%}
 
-						</section>
+										{% endfor %}
 
-					{% endif %}
+									</div>
 
-				{% endfor %}
+								{% endif %}
 
-			</div>
+							</section>
+
+						{% endif %}
+
+					{% endfor %}
+
+				</div>
+
+			{% endif %}
 
 		{% endfor %}
 

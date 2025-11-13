@@ -1,0 +1,19 @@
+<div class="tab-header">
+
+    <h3 class="tab-title">
+        {{ include.content.title }}
+    </h3>
+
+    {% if include.content.desc %}
+
+        {% for desc in include.content.desc %}
+
+            <p class="tab-description">
+                {{ desc.paragraph }}
+            </p>
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>

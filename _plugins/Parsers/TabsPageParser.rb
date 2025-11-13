@@ -43,6 +43,39 @@ module TabsPageParser
                     last_tab = {
                         "title" => Parser.parse(node),
                     }
+
+                    template = node.attr["data-template"]
+
+                    if template
+
+                        last_tab["template"] = template
+
+                        parser_name = template.split("-").map(&:capitalize).join
+
+                        if File.exist?(File.join(__dir__, "#{parser_name}.rb"))
+
+                            require_relative "#{parser_name}.rb"
+                            tabParser = Object.const_get(parser_name)
+
+                            tab_nodes = [node]
+
+                            nodes.children[(index + 1)..-1].each do |node|
+
+                                break if node.type == :header &&
+                                    node.options[:level] <= 2
+                                tab_nodes << node
+                                skip_nodes += 1
+
+                            end
+
+                            last_tab.merge!(
+                              tabParser.parse(tab_nodes),
+                            )
+
+                        end
+
+                    end
+
                     output["tabs"] << last_tab
 
                 when 3
