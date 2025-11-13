@@ -9,33 +9,26 @@ module NotReady
 
         nodes.each do |node|
 
-            case node.type
-            when :header
+            next unless node.type === :p
 
-                output["title"] = Parser.parse(node)
+            if node.children.length() == 1 &&
+                node.children[0].type == :a
 
-            when :p
+                link = node.children[0]
 
-                if node.children.length() == 1 &&
-                    node.children[0].type == :a
+                output["link"] = {
+                    "href" => link.attr["href"],
+                    "title" => link.attr["title"],
+                    "text" => Parser.parse(link),
+                }
 
-                    link = node.children[0]
+            else
 
-                    output["link"] = {
-                        "href" => link.attr["href"],
-                        "title" => link.attr["title"],
-                        "text" => Parser.parse(link),
-                    }
-
-                else
-
-                    output["desc"] ||= []
-                    output["desc"] << {
-                        "type" => "paragraph",
-                        "text" => Parser.parse(node),
-                    }
-
-                end
+                output["desc"] ||= []
+                output["desc"] << {
+                    "type" => "paragraph",
+                    "text" => Parser.parse(node),
+                }
 
             end
 

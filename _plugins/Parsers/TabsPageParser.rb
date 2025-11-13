@@ -6,7 +6,7 @@ module TabsPageParser
     def self.parse(nodes)
 
         output = {}
-        indent = 0
+        level = 0
 
         last_tab = nil
         last_section = nil
@@ -35,7 +35,6 @@ module TabsPageParser
                     output["subheader"] = {
                         "title" => Parser.parse(node),
                     }
-                    indent = 1
 
                 when 2
 
@@ -45,13 +44,14 @@ module TabsPageParser
                         "title" => Parser.parse(node),
                     }
                     output["tabs"] << last_tab
-                    indent = 2
 
                 when 3
 
                     # Section header
                     last_tab["sections"] ||= []
-                    last_section = {}
+                    last_section = {
+                        "title" => Parser.parse(node),
+                    }
 
                     template = node.attr["data-template"]
 
@@ -85,21 +85,11 @@ module TabsPageParser
                                 sectionParser.parse(section_nodes),
                             )
 
-                        else
-
-                            last_section["title"] = Parser.parse(node)
-
                         end
-
-                    else
-
-                        last_section["title"] = Parser.parse(node)
 
                     end
 
                     last_tab["sections"] << last_section
-
-                    indent = 3
 
                 when 4
 
@@ -118,13 +108,12 @@ module TabsPageParser
                         "title" => Parser.parse(node),
                     }
                     last_section["cards"] << last_card
-                    indent = 4
 
                 end
 
             when :p
 
-                case indent
+                case level
                 when 1
 
                     # Subheader description
@@ -151,7 +140,7 @@ module TabsPageParser
                     }
 
 
-                when 4
+                when 5
 
                     # Card text
                     last_card["text"] ||= []
@@ -163,7 +152,7 @@ module TabsPageParser
 
             when :ul
 
-                if indent == 4
+                if level == 5
 
                     # Card tags
                     last_card["tags"] ||= []

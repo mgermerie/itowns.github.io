@@ -10,14 +10,6 @@ module OrganizationChart
         nodes.each do |node|
 
             case node.type
-            when :header
-
-                if node.options[:level] == 3
-
-                    output["title"] = Parser.parse(node)
-
-                end
-
             when :p
 
                 output["desc"] ||= []

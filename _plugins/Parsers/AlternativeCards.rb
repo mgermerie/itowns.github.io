@@ -7,7 +7,7 @@ module AlternativeCards
 
         output = {}
 
-        indent = 0
+        level = 0
         last_card = nil
 
         nodes.each do |node|
@@ -17,33 +17,24 @@ module AlternativeCards
 
                 level = node.options[:level]
 
-                case level
-                when 3
+                next unless level === 5
 
-                    output["title"] = Parser.parse(node)
-                    indent = 3
+                output["cards"] ||= []
+                last_card = {
+                    "title" => Parser.parse(node),
+                }
 
-                when 5
+                if node.attr["data-image"]
 
-                    output["cards"] ||= []
-                    last_card = {
-                        "title" => Parser.parse(node),
-                    }
-
-                    if node.attr["data-image"]
-
-                        last_card["image"] = node.attr["data-image"]
-
-                    end
-
-                    output["cards"] << last_card
-                    indent = 4
+                    last_card["image"] = node.attr["data-image"]
 
                 end
 
+                output["cards"] << last_card
+
             when :p
 
-                case indent
+                case level
                 when 3
 
                     output["desc"] ||= []
@@ -52,7 +43,7 @@ module AlternativeCards
                         "text" => Parser.parse(node),
                     }
 
-                when 4
+                when 5
 
                     if node.children.length() == 1 &&
                         node.children[0].type == :a

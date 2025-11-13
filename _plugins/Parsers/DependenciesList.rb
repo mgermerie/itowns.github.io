@@ -9,35 +9,24 @@ module DependenciesList
 
         nodes.each do |node|
 
-            case node.type
-            when :header
+            next unless node.type === :ul
 
-                if node.options[:level] == 3
+            output["list"] ||= []
 
-                    output["title"] = Parser.parse(node)
+            node.children.each do |child|
 
-                end
+                input = {
+                    "name" => Parser.parse(child.children[0]),
+                    "license" => Parser.parse(child.children[1]),
+                }
 
-            when :ul
+                if child.children[2]
 
-                output["list"] ||= []
-
-                node.children.each do |child|
-
-                    input = {
-                        "name" => Parser.parse(child.children[0]),
-                        "license" => Parser.parse(child.children[1]),
-                    }
-
-                    if child.children[2]
-
-                        input["link"] = Parser.parse(child.children[2])
-
-                    end
-
-                    output["list"] << input
+                    input["link"] = Parser.parse(child.children[2])
 
                 end
+
+                output["list"] << input
 
             end
 
