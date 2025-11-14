@@ -8,6 +8,10 @@ url: "https://www.itowns-project.org/"
 
 github_username: iTowns
 
+exclude:
+  - node_modules
+  - package.json
+  - package-lock.json
 
 sass:
   style: compressed
